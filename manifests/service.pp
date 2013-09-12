@@ -72,6 +72,17 @@ class elasticsearch::service {
 
   }
 
+  ## Get the init file we provide
+  case $::operatingsystem {
+    'Debian', 'Ubuntu': {
+      file { '/etc/init.d/elasticsearch':
+        ensure  => present,
+        mode    => '0755',
+        content => template("${module_name}/etc/init.d/elasticsearch.init.Debian.erb"),        
+      }
+    }
+  }
+
   # action
   service { 'elasticsearch':
     ensure     => $service_ensure,
